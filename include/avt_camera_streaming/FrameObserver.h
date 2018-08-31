@@ -26,12 +26,16 @@
 
 =============================================================================*/
 
+/*=========================================================
+Modified by Hui Xiao - University of Connecticuit - 2018
+hui.xiao@uconn.edu
+===========================================================*/
+
 #ifndef AVT_VMBAPI_EXAMPLES_FRAMEOBSERVER
 #define AVT_VMBAPI_EXAMPLES_FRAMEOBSERVER
 
 #include <queue>
 #include "VimbaCPP/Include/VimbaCPP.h"
-#include "avt_camera_streaming/ProgramConfig.h"
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui.hpp"
 #include <opencv2/imgproc.hpp>
@@ -55,7 +59,7 @@ public:
     //  [in]    eFrameInfos         Indicates how the frame will be displayed
     //  [in]    eColorProcessing    Indicates how color processing is applied
     //
-    FrameObserver( CameraPtr pCamera, FrameInfos eFrameInfos, ColorProcessing eColorProcessing, bool bRGBValue );
+    FrameObserver( CameraPtr pCamera);
     
     //
     // This is our callback routine that will be executed on every received frame.
@@ -103,9 +107,6 @@ private:
             m_State = false;
         }
     };
-    const FrameInfos            m_eFrameInfos;
-    const bool                  m_bRGB;
-    const ColorProcessing       m_eColorProcessing;
     VmbInt64_t					width=1600;					//width and height of the image.
 	VmbInt64_t					height=1200;
     ValueWithState<double>      m_FrameTime;

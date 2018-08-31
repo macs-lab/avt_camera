@@ -26,6 +26,11 @@
 
 =============================================================================*/
 
+/*=========================================================
+Modified by Hui Xiao - University of Connecticuit - 2018
+hui.xiao@uconn.edu
+===========================================================*/
+
 #include <iostream>
 #include <iomanip>
 #ifdef WIN32
@@ -35,8 +40,6 @@
 #endif //WIN32
 
 #include "avt_camera_streaming/FrameObserver.h"
-
-#include "avt_camera_streaming/TransformImage.h"
 
 #define SHOW_FRAME_INFO 1
 
@@ -52,20 +55,9 @@ namespace Examples {
 //  [in]    eFrameInfos         Indicates how the frame will be displayed
 //  [in]    eColorProcessing    Indicates how color processing is applied
 //
-FrameObserver::FrameObserver( CameraPtr pCamera, FrameInfos eFrameInfos, ColorProcessing eColorProcessing, bool bRGBValue )
+FrameObserver::FrameObserver( CameraPtr pCamera )
     :   IFrameObserver( pCamera )
-    ,   m_eFrameInfos( eFrameInfos )
-    ,   m_bRGB( bRGBValue )
-    ,   m_eColorProcessing( eColorProcessing )
-#ifdef WIN32
-    ,   m_dFrequency( 0.0 )
-#endif //WIN32
 {
-#ifdef WIN32
-    LARGE_INTEGER nFrequency;
-    QueryPerformanceFrequency( &nFrequency );
-    m_dFrequency = (double)nFrequency.QuadPart;
-#endif //WIN32
     // Set the width and height of the camera image
 	VmbInt64_t width_s = IMAGE_SIZE_WIDTH;
 	VmbInt64_t height_s = IMAGE_SIZE_HEIGHT;
@@ -344,10 +336,6 @@ void FrameObserver::ShowFrameInfos( const FramePtr &pFrame )
     double              dFPS                = 0.0;
     bool                bFPSValid           = false;
     VmbUint64_t         nFramesMissing      = 0;
-    if( FrameInfos_Show == m_eFrameInfos )
-    {
-        bShowFrameInfos = true;
-    }
 
     res = pFrame->GetFrameID( nFrameID );
     if( VmbErrorSuccess == res )

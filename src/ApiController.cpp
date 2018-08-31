@@ -26,6 +26,12 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =============================================================================*/
+
+/*=========================================================
+Modified by Hui Xiao - University of Connecticuit - 2018
+hui.xiao@uconn.edu
+===========================================================*/
+
 #include <sstream>
 #include <iostream>
 
@@ -97,7 +103,7 @@ void ApiController::ShutDown()
 // Returns:
 //  An API status code
 //
-VmbErrorType ApiController::StartContinuousImageAcquisition( const ProgramConfig& Config )
+VmbErrorType ApiController::StartContinuousImageAcquisition()
 {
     // Open the desired camera by its ID
     VmbErrorType res = m_system.OpenCameraByID( CAM_IP, VmbAccessModeFull, m_pCamera );
@@ -128,7 +134,7 @@ VmbErrorType ApiController::StartContinuousImageAcquisition( const ProgramConfig
             if ( VmbErrorSuccess == res )
             {
                 // Create a frame observer for this camera (This will be wrapped in a shared_ptr so we don't delete it)
-                m_pFrameObserver = new FrameObserver( m_pCamera, Config.getFrameInfos(), Config.getColorProcessing(), Config.getRGBValue() );
+                m_pFrameObserver = new FrameObserver( m_pCamera) ;
                 // Start streaming
                 res = m_pCamera->StartContinuousImageAcquisition( NUM_FRAMES, IFrameObserverPtr( m_pFrameObserver ));
             }

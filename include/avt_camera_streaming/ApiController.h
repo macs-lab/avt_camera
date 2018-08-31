@@ -27,6 +27,11 @@
 
 =============================================================================*/
 
+/*=========================================================
+Modified by Hui Xiao - University of Connecticuit - 2018
+hui.xiao@uconn.edu
+===========================================================*/
+
 #ifndef AVT_VMBAPI_EXAMPLES_APICONTROLLER
 #define AVT_VMBAPI_EXAMPLES_APICONTROLLER
 
@@ -73,7 +78,7 @@ class ApiController
     // Returns:
     //  An API status code
     //
-    VmbErrorType        StartContinuousImageAcquisition( const ProgramConfig & );    
+    VmbErrorType        StartContinuousImageAcquisition();    
     
     //
     // Calls the API convenience function to stop image acquisition
