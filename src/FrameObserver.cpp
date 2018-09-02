@@ -41,7 +41,7 @@ hui.xiao@uconn.edu
 
 #include "avt_camera_streaming/FrameObserver.h"
 
-#define SHOW_FRAME_INFO 1
+#define SHOW_FRAME_INFO 0
 
 namespace AVT {
 namespace VmbAPI {
@@ -466,8 +466,9 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
 				cv::Mat image = cv::Mat(height, width, CV_8UC1, pImage);
 				cv::cvtColor(image, image, cv::COLOR_BayerBG2RGB);
 				m_pCamera->QueueFrame(pFrame);   // I can queue frame here because image is already transformed.
-                cv::imshow("image", image);
-                cv::waitKey(1);			
+                //cv::imshow("image", image);
+                //cv::waitKey(1);
+                mp.PublishImage(image);		
 			}
         }
         else

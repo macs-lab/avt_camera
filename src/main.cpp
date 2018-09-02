@@ -37,11 +37,13 @@ hui.xiao@uconn.edu
 
 #include "VimbaCPP/Include/VimbaCPP.h"
 #include "avt_camera_streaming/ApiController.h"
+#include "ros/ros.h"
 
 int main( int argc, char* argv[] )
 {
-    VmbErrorType err = VmbErrorSuccess;
+    ros::init( argc, argv, "avt_camera");
 
+    VmbErrorType err = VmbErrorSuccess;
     AVT::VmbAPI::Examples::ApiController apiController;
     
     // Print out version of Vimba

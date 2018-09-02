@@ -74,7 +74,6 @@ std::string ApiController::ErrorCodeToMessage( VmbErrorType eErr ) const
 //
 // Returns:
 //  An API status code
-//
 VmbErrorType ApiController::StartUp()
 {
     return m_system.Startup();

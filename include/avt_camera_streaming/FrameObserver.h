@@ -40,6 +40,8 @@ hui.xiao@uconn.edu
 #include "opencv2/highgui.hpp"
 #include <opencv2/imgproc.hpp>
 
+#include "avt_camera_streaming/MessagePublisher.h"
+
 #define IMAGE_SIZE_WIDTH 1600
 #define IMAGE_SIZE_HEIGHT 1200
 
@@ -111,6 +113,8 @@ private:
 	VmbInt64_t					height=1200;
     ValueWithState<double>      m_FrameTime;
     ValueWithState<VmbUint64_t> m_FrameID;
+
+    MessagePublisher mp;
 };
 
 }}} // namespace AVT::VmbAPI::Examples
