@@ -15,7 +15,12 @@
 class MessagePublisher
 {
 public:
-    MessagePublisher();
+    // use member initializer list to initialize ImageTransport
+    // Initializing when it is decleared will produce a compile error.
+    MessagePublisher() : it(nh)
+    {
+        img_pub = it.advertise("avt_camera_img",1);
+    }
 
     // convert OpenCV image to ROS message
     // publish message to ROS topic
@@ -24,12 +29,7 @@ public:
 private:
     // ros::init() is called in main.cpp
     ros::NodeHandle nh;
-    ros::Publisher img_pub = nh.advertise<sensor_msgs::Image>("avt_camera_img",1);
-
-    // Needs Debug here: why can't use image transport?
-    // error: 'nh' is not a type
-    //image_transport::ImageTransport it(nh);
-    //image_transport::Publisher img_pub = it.advertise("avt_camera_img",1);
-
+    image_transport::ImageTransport it;
+    image_transport::Publisher img_pub;
     sensor_msgs::ImagePtr msg;
 };

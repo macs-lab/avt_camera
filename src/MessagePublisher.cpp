@@ -5,10 +5,6 @@
 
 #include "avt_camera_streaming/MessagePublisher.h"
 
-MessagePublisher::MessagePublisher()
-{
-    std::cout << "Starting Message Publisher" << std::endl;
-}
 
 void MessagePublisher::PublishImage(cv::Mat &image)
 {
