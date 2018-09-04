@@ -44,8 +44,6 @@ namespace VmbAPI {
 namespace Examples {
 
 #define NUM_FRAMES 3
-#define CAM_IP "169.254.75.133"
-
 
 ApiController::ApiController(CameraParam cp)
     : m_system ( VimbaSystem::GetInstance() )
@@ -148,7 +146,7 @@ VmbErrorType ApiController::StartContinuousImageAcquisition()
     }
     else
     {
-        std::cout << "failed to open camera with IP: " << CAM_IP << std::endl;
+        ROS_ERROR("failed to open camera with IP: %s", cam_param.cam_IP.c_str());
     }
 
     return res;

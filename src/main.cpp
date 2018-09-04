@@ -40,11 +40,55 @@ hui.xiao@uconn.edu
 #include "ros/ros.h"
 #include "avt_camera_streaming/CamParam.h"
 
+// this function fetch parameters from ROS server
+void getParams(ros::NodeHandle &n, CameraParam &cp);
+
 int main( int argc, char* argv[] )
 {
     ros::init( argc, argv, "avt_camera");
     ros::NodeHandle n("~");  // for accessing private parameter server.
     CameraParam cam_param;
+    getParams(n, cam_param);
+
+    VmbErrorType err = VmbErrorSuccess;
+    AVT::VmbAPI::Examples::ApiController apiController(cam_param);
+    
+    // Print out version of Vimba
+    std::cout<<"Vimba C++ API Version "<<apiController.GetVersion()<<"\n";
+    
+    // Startup Vimba
+    err = apiController.StartUp();        
+    if ( VmbErrorSuccess == err )
+    {
+        err = apiController.StartContinuousImageAcquisition();
+
+        if ( VmbErrorSuccess == err )
+        {
+            std::cout<< "Press Ctrl-C to stop acquisition...\n" ;
+            while (ros::ok())
+            {
+
+            }
+            apiController.StopContinuousImageAcquisition();
+        }
+        apiController.ShutDown();
+    }
+
+    if ( VmbErrorSuccess == err )
+    {
+        std::cout<<"\nAcquisition stopped.\n" ;
+    }
+    else
+    {
+        std::string strError = apiController.ErrorCodeToMessage( err );
+        std::cout<<"\nAn error occurred: " << strError << "\n";
+    }
+    return err;
+}
+
+
+void getParams(ros::NodeHandle &n, CameraParam &cam_param)
+{
     int height,width,exposure;
     if(n.getParam("cam_IP", cam_param.cam_IP))
     {
@@ -88,39 +132,4 @@ int main( int argc, char* argv[] )
     cam_param.image_height = height;
     cam_param.image_width = width;
     cam_param.exposure_in_us = exposure;
-
-    VmbErrorType err = VmbErrorSuccess;
-    AVT::VmbAPI::Examples::ApiController apiController(cam_param);
-    
-    // Print out version of Vimba
-    std::cout<<"Vimba C++ API Version "<<apiController.GetVersion()<<"\n";
-    
-    // Startup Vimba
-    err = apiController.StartUp();        
-    if ( VmbErrorSuccess == err )
-    {
-        err = apiController.StartContinuousImageAcquisition();
-
-        if ( VmbErrorSuccess == err )
-        {
-            std::cout<< "Press Ctrl-C to stop acquisition...\n" ;
-            while (ros::ok())
-            {
-
-            }
-            apiController.StopContinuousImageAcquisition();
-        }
-        apiController.ShutDown();
-    }
-
-    if ( VmbErrorSuccess == err )
-    {
-        std::cout<<"\nAcquisition stopped.\n" ;
-    }
-    else
-    {
-        std::string strError = apiController.ErrorCodeToMessage( err );
-        std::cout<<"\nAn error occurred: " << strError << "\n";
-    }
-    return err;
 }
