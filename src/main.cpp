@@ -103,9 +103,11 @@ int main( int argc, char* argv[] )
 
         if ( VmbErrorSuccess == err )
         {
-            std::cout<< "Press <enter> to stop acquisition...\n" ;
-            getchar();
+            std::cout<< "Press Ctrl-C to stop acquisition...\n" ;
+            while (ros::ok())
+            {
 
+            }
             apiController.StopContinuousImageAcquisition();
         }
         apiController.ShutDown();
