@@ -40,6 +40,7 @@ hui.xiao@uconn.edu
 #include "VimbaCPP/Include/VimbaCPP.h"
 
 #include "avt_camera_streaming/FrameObserver.h"
+#include "avt_camera_streaming/CamParam.h"
 
 namespace AVT {
 namespace VmbAPI {
@@ -48,7 +49,7 @@ namespace Examples {
 class ApiController
 {
   public:
-    ApiController();
+    ApiController(CameraParam cp);
     ~ApiController();
 
     //
@@ -73,7 +74,7 @@ class ApiController
     // Closes the camera in case of failure
     //
     // Parameters:
-    //  [in]    Config      A configuration struct including the camera ID and other settings
+    //  [in]    cam_IP
     //
     // Returns:
     //  An API status code
@@ -121,6 +122,7 @@ class ApiController
     VimbaSystem &       m_system;                   // A reference to our Vimba singleton
     CameraPtr           m_pCamera;                  // The currently streaming camera
     FrameObserver*      m_pFrameObserver;           // Every camera has its own frame observer
+    CameraParam cam_param;                             // Struct used to store camer parameters
 };
 
 }}} // namespace AVT::VmbAPI::Examples

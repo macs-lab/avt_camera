@@ -41,6 +41,9 @@ hui.xiao@uconn.edu
 #include <opencv2/imgproc.hpp>
 
 #include "avt_camera_streaming/MessagePublisher.h"
+#include "avt_camera_streaming/CamParam.h"
+
+#include "ros/console.h"
 
 #define IMAGE_SIZE_WIDTH 1600
 #define IMAGE_SIZE_HEIGHT 1200
@@ -61,7 +64,7 @@ public:
     //  [in]    eFrameInfos         Indicates how the frame will be displayed
     //  [in]    eColorProcessing    Indicates how color processing is applied
     //
-    FrameObserver( CameraPtr pCamera);
+    FrameObserver( CameraPtr pCamera, CameraParam cp);
     
     //
     // This is our callback routine that will be executed on every received frame.
@@ -115,6 +118,7 @@ private:
     ValueWithState<VmbUint64_t> m_FrameID;
 
     MessagePublisher mp;
+    CameraParam cam_param;
 };
 
 }}} // namespace AVT::VmbAPI::Examples

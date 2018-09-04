@@ -46,10 +46,12 @@ namespace Examples {
 #define NUM_FRAMES 3
 #define CAM_IP "169.254.75.133"
 
-ApiController::ApiController()
-    // Get a reference to the Vimba singleton
+
+ApiController::ApiController(CameraParam cp)
     : m_system ( VimbaSystem::GetInstance() )
+    , cam_param( cp )
 {}
+
 
 ApiController::~ApiController()
 {
@@ -105,7 +107,7 @@ void ApiController::ShutDown()
 VmbErrorType ApiController::StartContinuousImageAcquisition()
 {
     // Open the desired camera by its ID
-    VmbErrorType res = m_system.OpenCameraByID( CAM_IP, VmbAccessModeFull, m_pCamera );
+    VmbErrorType res = m_system.OpenCameraByID( cam_param.cam_IP.c_str(), VmbAccessModeFull, m_pCamera );
     if ( VmbErrorSuccess == res )
     {
         // Set the GeV packet size to the highest possible value
@@ -133,7 +135,7 @@ VmbErrorType ApiController::StartContinuousImageAcquisition()
             if ( VmbErrorSuccess == res )
             {
                 // Create a frame observer for this camera (This will be wrapped in a shared_ptr so we don't delete it)
-                m_pFrameObserver = new FrameObserver( m_pCamera) ;
+                m_pFrameObserver = new FrameObserver( m_pCamera, cam_param) ;
                 // Start streaming
                 res = m_pCamera->StartContinuousImageAcquisition( NUM_FRAMES, IFrameObserverPtr( m_pFrameObserver ));
             }

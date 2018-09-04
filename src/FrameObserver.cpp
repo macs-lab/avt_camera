@@ -55,16 +55,17 @@ namespace Examples {
 //  [in]    eFrameInfos         Indicates how the frame will be displayed
 //  [in]    eColorProcessing    Indicates how color processing is applied
 //
-FrameObserver::FrameObserver( CameraPtr pCamera )
+FrameObserver::FrameObserver( CameraPtr pCamera, CameraParam cp)
     :   IFrameObserver( pCamera )
+    ,   cam_param(cp)
 {
     // Set the width and height of the camera image
-	VmbInt64_t width_s = IMAGE_SIZE_WIDTH;
-	VmbInt64_t height_s = IMAGE_SIZE_HEIGHT;
+	VmbInt64_t width_s = cam_param.image_width;
+	VmbInt64_t height_s = cam_param.image_height;
 	SetCameraImageSize(pCamera, width_s, height_s);
 
 	// Set the exposure time
-	VmbInt64_t expTime = 5000;
+	VmbInt64_t expTime = cam_param.exposure_in_us;
 	SetExposureTime(expTime);
 
 	// Read the width and height of the camera image
@@ -111,8 +112,7 @@ void FrameObserver::SetCameraImageSize(CameraPtr m_pCamera, const VmbInt64_t& wi
 		}
 		else
 		{
-			std::cout << "failed to set height." << std::endl;
-			getchar();
+            ROS_ERROR("failed to set height.");
 		}
 	}
 
@@ -133,8 +133,7 @@ void FrameObserver::SetCameraImageSize(CameraPtr m_pCamera, const VmbInt64_t& wi
 		}
 		else
 		{
-			std::cout << "failed to set width." << std::endl;
-			getchar();
+            ROS_ERROR("failed to set width");
 		}
 	}
 
@@ -156,8 +155,7 @@ void FrameObserver::SetCameraImageSize(CameraPtr m_pCamera, const VmbInt64_t& wi
 		}
 		else
 		{
-			std::cout << "failed to set OffsetX." << std::endl;
-			getchar();
+            ROS_ERROR("failed to set OffsetX");
 		}
 	}
 
@@ -178,8 +176,7 @@ void FrameObserver::SetCameraImageSize(CameraPtr m_pCamera, const VmbInt64_t& wi
 		}
 		else
 		{
-			std::cout << "failed to set OffsetY." << std::endl;
-			getchar();
+            ROS_ERROR("failed to set OffsetY");
 		}
 	}
 	
