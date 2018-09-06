@@ -41,7 +41,7 @@ hui.xiao@uconn.edu
 
 #include "avt_camera_streaming/FrameObserver.h"
 
-#define MAX_DEQUE_SIZE 4
+#define SHOW_FRAME_INFO 0
 
 namespace AVT {
 namespace VmbAPI {
@@ -85,9 +85,6 @@ FrameObserver::FrameObserver( CameraPtr pCamera, CameraParam cp)
 			std::cout << "The Image height is " << height << std::endl;
 		}
 	}
-
-    std::thread t_image_sending(&FrameObserver::ImageSending, this);
-    t_image_sending.detach();
 }
 
 
@@ -464,21 +461,11 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
             if (VmbErrorSuccess == pFrame->GetImage(pImage))
 			{
 				cv::Mat image = cv::Mat(height, width, CV_8UC1, pImage);
-                if (mat_deque.size() < MAX_DEQUE_SIZE)
-				{
-					mat_deque.push_front(image);
-				}
-				else
-				{
-					//replace old image with a new one.
-					mat_deque.pop_front();
-					mat_deque.push_front(image);
-				}
-				//cv::cvtColor(image, image, cv::COLOR_BayerBG2RGB);
-				//m_pCamera->QueueFrame(pFrame);   // I can queue frame here because image is already transformed.
+				cv::cvtColor(image, image, cv::COLOR_BayerBG2RGB);
+				m_pCamera->QueueFrame(pFrame);   // I can queue frame here because image is already transformed.
                 //cv::imshow("image", image);
                 //cv::waitKey(1);
-                //mp.PublishImage(image);		
+                mp.PublishImage(image);		
 			}
         }
         else
@@ -493,25 +480,4 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
 
     m_pCamera->QueueFrame( pFrame );
 }
-
-
-void FrameObserver::ImageSending()
-{
-    cv::Mat new_image;
-    while(1)
-    {
-        if(mat_deque.size() > 1)
-        {
-            new_image = mat_deque.back();
-            mat_deque.pop_back();
-            cv::cvtColor(new_image, new_image, cv::COLOR_BayerBG2RGB);
-            mp.PublishImage(new_image);	
-        }
-        else
-        {
-            continue;
-        }
-    }
-}
-
 }}} // namespace AVT::VmbAPI::Examples
