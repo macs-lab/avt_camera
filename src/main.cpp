@@ -45,7 +45,7 @@ void getParams(ros::NodeHandle &n, CameraParam &cp);
 
 int main( int argc, char* argv[] )
 {
-    ros::init( argc, argv, "avt_camera");
+    ros::init( argc, argv, "avt_camera", ros::init_options::AnonymousName);
     ros::NodeHandle n("~");  // for accessing private parameter server.
     CameraParam cam_param;
     getParams(n, cam_param);
@@ -128,6 +128,16 @@ void getParams(ros::NodeHandle &n, CameraParam &cam_param)
     {
         exposure = 10000;
         ROS_ERROR("failed to get param 'exposure_in_us' ");
+    }
+
+    if(n.getParam("show_frame_info", cam_param.show_frame_info))
+    {
+        ROS_INFO("Got show_frame_info: %d", cam_param.show_frame_info);
+    }
+    else
+    {
+        cam_param.show_frame_info = false;
+        ROS_ERROR("failed to get param 'show_frame_info' ");
     }
     cam_param.image_height = height;
     cam_param.image_width = width;

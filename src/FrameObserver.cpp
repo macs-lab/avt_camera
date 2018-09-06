@@ -449,7 +449,7 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
     VmbUchar_t *pImage = NULL; // frame data will be put here to be converted to cv::Mat
     if(! SP_ISNULL( pFrame ) )
     {
-        if( SHOW_FRAME_INFO )
+        if( cam_param.show_frame_info )
         {
             ShowFrameInfos( pFrame);
         }

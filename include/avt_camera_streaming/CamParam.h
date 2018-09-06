@@ -14,7 +14,8 @@ struct CameraParam
     std::string cam_IP;
     int image_height;
     int image_width;
-    int exposure_in_us;    
+    int exposure_in_us;
+    bool show_frame_info;    
 };
 
 
