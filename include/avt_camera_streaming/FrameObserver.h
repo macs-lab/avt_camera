@@ -45,8 +45,9 @@ hui.xiao@uconn.edu
 
 #include "ros/console.h"
 
-#define IMAGE_SIZE_WIDTH 1600
-#define IMAGE_SIZE_HEIGHT 1200
+#include <thread>
+#include <mutex>
+
 
 namespace AVT {
 namespace VmbAPI {
@@ -74,6 +75,7 @@ public:
     //  [in]    pFrame          The frame returned from the API
     //
     virtual void FrameReceived( const FramePtr pFrame );
+
 
 private:
     void ShowFrameInfos( const FramePtr & );
@@ -119,6 +121,10 @@ private:
 
     MessagePublisher mp;
     CameraParam cam_param;
+
+    std::deque<cv::Mat> mat_deque;
+    // function thread for sending images
+    void ImageSending();
 };
 
 }}} // namespace AVT::VmbAPI::Examples

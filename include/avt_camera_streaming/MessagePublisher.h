@@ -19,7 +19,7 @@ public:
     // Initializing when it is decleared will produce a compile error.
     MessagePublisher() : it(nh)
     {
-        img_pub = it.advertise("avt_camera_img",1);
+        img_pub = it.advertise("avt_camera_img",10);
     }
 
     // convert OpenCV image to ROS message
