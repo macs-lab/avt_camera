@@ -67,7 +67,7 @@ int main( int argc, char* argv[] )
             std::cout<< "Press Ctrl-C to stop acquisition...\n" ;
             while (ros::ok())
             {
-
+                ros::spinOnce();
             }
             apiController.StopContinuousImageAcquisition();
         }
