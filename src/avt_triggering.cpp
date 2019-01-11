@@ -379,7 +379,15 @@ void AVTCamera::SetCameraFeature()
 
     // Set Trigger source
     camera->GetFeatureByName("TriggerSource", pFeature);
-    err = pFeature->SetValue("Software");
+    if(cam_param.trigger)
+    {
+        err = pFeature->SetValue("Software");
+    }
+    else
+    {
+        err = pFeature->SetValue("Freerun");
+    }
+    
     if (VmbErrorSuccess == err)
     {
         bool bIsCommandDone = false;
