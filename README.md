@@ -1,8 +1,10 @@
 # avt_camera
-Acquire images from AVT camera using Vimba SDK. Convert to ROS image messages.
+Acquire images from AVT camera using [Vimba SDK](https://www.alliedvision.com/en/products/software.html). Convert to ROS image messages.
 
 ## ROS Topics
-image publised with [image_transport](http://wiki.ros.org/image_transport). The root image topics name is ``/avt_camera_img``
+image published with [image_transport](http://wiki.ros.org/image_transport). The root image topics name is ``/avt_camera_img``
+
+The camera can be triggered by sending a message (type ``std_msgs/String``) to ``/trigger`` topic. The camera will acquire an image each time a trigger message is received.
 
 ## ROS parameters
 ``~cam_IP``: type ``str`` default ``169.254.75.133``
@@ -13,12 +15,14 @@ image publised with [image_transport](http://wiki.ros.org/image_transport). The 
 
 ``~exposure_in_us``: type ``int`` default ``10000`` (micro seconds)
 
-``~show_frame_info``: type ``bool`` default ``false``
+``~trigger``: type ``bool`` default ``false``
 
 ## Launch files
-*image_view.launch*
+*image_view.launch*: start a camera in continuous asynchronous grabbing mode.
 
-*image_view_dual_cam.launch*
+*image_view_dual_cam.launch*: start two cameras in continuous asynchronous grabbing mode.
+
+*image_view_trigger*: start a camera in triggerd grabbing mode.
 
 ## Usage
 1. Befor installation, make sure the following packages are installed:
