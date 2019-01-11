@@ -163,6 +163,20 @@ target_link_libraries(avt_camera_node
    ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaImageTransform.so
 )
 
+add_executable(avt_triggering
+  src/avt_triggering.cpp
+  src/MessagePublisher.cpp 
+)
+add_dependencies(avt_triggering ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(avt_triggering
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaC.so
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaCPP.so
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaImageTransform.so
+)
+
 #############
 ## Install ##
 #############
@@ -210,3 +224,5 @@ target_link_libraries(avt_camera_node
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
