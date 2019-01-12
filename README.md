@@ -1,5 +1,5 @@
-# avt_camera
-Acquire images from AVT camera using [Vimba SDK](https://www.alliedvision.com/en/products/software.html). Convert to ROS image messages.
+# Purpose
+Acquire images from Allied Vision Technologies (AVT) camera using [Vimba SDK](https://www.alliedvision.com/en/products/software.html). Convert to [Robot Operating System](http://www.ros.org) (ROS) image messages.
 
 ## ROS Topics
 image published with [image_transport](http://wiki.ros.org/image_transport). The root image topics name is ``/avt_camera_img``
