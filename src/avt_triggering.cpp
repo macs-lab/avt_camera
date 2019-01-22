@@ -162,7 +162,7 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
 
     if(n.getParam("exposure_auto", cam_param.exposure_auto))
     {
-        ROS_INFO("exposure_auto %s", cam_param.trigger ? "enabled" : "disabled");
+        ROS_INFO("exposure_auto %s", cam_param.exposure_auto ? "enabled" : "disabled");
     }
     else
     {

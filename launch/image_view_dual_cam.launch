@@ -6,6 +6,8 @@
             <param name="~image_width" type="int" value="1600"/>
             <param name="~exposure_in_us" type="int" value="7000"/>
             <param name="~trigger" type="bool" value="false"/>
+            <param name="~balance_white_auto" type="bool" value="false"/>
+            <param name="~exposure_auto" type="bool" value="false"/>
         </node>
         <node name="image_viewer" pkg="image_view" type="image_view">
             <remap from="image" to="avt_camera_img"/>
@@ -18,6 +20,8 @@
             <param name="~image_width" type="int" value="1600"/>
             <param name="~exposure_in_us" type="int" value="7000"/>
             <param name="~trigger" type="bool" value="false"/>
+            <param name="~balance_white_auto" type="bool" value="false"/>
+            <param name="~exposure_auto" type="bool" value="false"/>
         </node>
         <node name="image_viewer" pkg="image_view" type="image_view">
             <remap from="image" to="avt_camera_img"/>
