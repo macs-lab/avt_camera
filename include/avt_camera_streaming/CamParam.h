@@ -16,7 +16,8 @@ struct CameraParam
     int image_width;
     int exposure_in_us;
     bool trigger;
-    bool show_frame_info;    
+    bool balance_white_auto;
+    bool exposure_auto;
 };
 
 

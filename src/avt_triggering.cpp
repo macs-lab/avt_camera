@@ -159,6 +159,27 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
         cam_param.trigger = false;
         ROS_ERROR("failed to get param 'trigger' ");
     }
+
+    if(n.getParam("exposure_auto", cam_param.exposure_auto))
+    {
+        ROS_INFO("exposure_auto %s", cam_param.trigger ? "enabled" : "disabled");
+    }
+    else
+    {
+        cam_param.exposure_auto = false;
+        ROS_ERROR("failed to get param 'exposure_auto' ");
+    }
+
+    if(n.getParam("balance_white_auto", cam_param.balance_white_auto))
+    {
+        ROS_INFO("balance_white_auto %s", cam_param.balance_white_auto ? "enabled" : "disabled");
+    }
+    else
+    {
+        cam_param.balance_white_auto = false;
+        ROS_ERROR("failed to get param 'balance_white_auto' ");
+    }
+
     cam_param.image_height = height;
     cam_param.image_width = width;
     cam_param.exposure_in_us = exposure;
@@ -362,6 +383,7 @@ void AVTCamera::SetCameraFeature()
     VmbErrorType err;
     SetExposureTime(cam_param.exposure_in_us);
     SetCameraImageSize(cam_param.image_width, cam_param.image_height);
+
     // Set acquisition mode
     camera->GetFeatureByName("AcquisitionMode", pFeature);
     err = pFeature->SetValue("Continuous");
@@ -375,6 +397,10 @@ void AVTCamera::SetCameraFeature()
                 break;
             }
         } while (false == bIsCommandDone);
+    }
+    else
+    {
+        ROS_ERROR("Failed to set acquisition mode");
     }
 
     // Set Trigger source
@@ -399,6 +425,63 @@ void AVTCamera::SetCameraFeature()
             }
         } while (false == bIsCommandDone);
     }
+    else
+    {
+        ROS_ERROR("Failed to set Trigger Source");
+    }
+
+    // Set Exposure Auto
+    camera->GetFeatureByName("ExposureAuto", pFeature);
+    if(cam_param.exposure_auto)
+    {
+        err = pFeature->SetValue("Continuous");
+    }
+    else
+    {
+        err = pFeature->SetValue("Off");
+    }
+    if (VmbErrorSuccess == err)
+    {
+        bool bIsCommandDone = false;
+        do
+        {
+            if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+            {
+                break;
+            }
+        } while (false == bIsCommandDone);
+    }
+    else
+    {
+        ROS_ERROR("failed to set ExposureAuto");
+    }
+
+    // Set Balance White Auto
+    camera->GetFeatureByName("BalanceWhiteAuto", pFeature);
+    if(cam_param.balance_white_auto)
+    {
+        err = pFeature->SetValue("Continuous");
+    }
+    else
+    {
+        err = pFeature->SetValue("Off");
+    }
+    if (VmbErrorSuccess == err)
+    {
+        bool bIsCommandDone = false;
+        do
+        {
+            if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+            {
+                break;
+            }
+        } while (false == bIsCommandDone);
+    }
+    else
+    {
+        ROS_ERROR("failed to set BalanceWhiteAuto");
+    }
+
 }
 
 int main( int argc, char* argv[])

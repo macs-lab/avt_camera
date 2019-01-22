@@ -138,11 +138,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(avt_camera_node
-  src/MessagePublisher.cpp 
-  src/main.cpp 
-  src/FrameObserver.cpp 
-  src/ApiController.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -152,16 +148,9 @@ add_executable(avt_camera_node
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(avt_camera_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(avt_camera_node
-   ${catkin_LIBRARIES}
-   ${OpenCV_LIBS}
-   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaC.so
-   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaCPP.so
-   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaImageTransform.so
-)
 
 add_executable(avt_triggering
   src/avt_triggering.cpp
