@@ -17,6 +17,10 @@ The camera can be triggered by sending a message (type ``std_msgs/String``) to `
 
 ``~trigger``: type ``bool`` default ``false``
 
+``balance_white_auto``: type ``bool`` default ``false``
+
+``exposure_auto``: type ``bool`` default ``false``
+
 ## Launch files
 *image_view.launch*: start a camera in continuous asynchronous grabbing mode.
 
