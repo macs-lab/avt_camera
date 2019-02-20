@@ -29,13 +29,13 @@ The camera can be triggered by sending a message (type ``std_msgs/String``) to `
 *image_view_trigger*: start a camera in triggerd grabbing mode.
 
 ## Usage
-1. Befor installation, make sure the following packages are installed:
+1. Before installation, make sure the following packages are installed:
 
 [``cv_bridge``](http://wiki.ros.org/cv_bridge)
 
 [``image_transport``](http://wiki.ros.org/image_transport)
 
-[``OpenCV 3.4.1``](https://opencv.org/opencv-3-4-1.html) (other version of OpenCV is not tested, might works as well)
+[``OpenCV 3.4.1``](https://opencv.org/opencv-3-4-1.html) (other versions of OpenCV is not tested, they might work as well)
 
 2. Clone this package to your working directory
 
@@ -48,6 +48,6 @@ find_package(OpenCV 3.4.1 REQUIRED)
 
 4. Build this package
 
-5. Modify the parameters in the lanch files. You need to correctly set your camera IP.
+5. Modify the parameters in the launch files. You need to correctly set your camera IP.
 
-6. Run the launch file, then you should be able to see camera images on screen.
+6. Run the launch file, then you should be able to see camera images on the screen.

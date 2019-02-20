@@ -29,7 +29,7 @@ public:
     // and pass a camera object
     FrameObserver( AVT::VmbAPI::CameraPtr pCamera, MessagePublisher& imgPublisher) : IFrameObserver( pCamera ), pImagePublisher(&imgPublisher)
     {
-    // Put your initialization code here
+        
     }
     void FrameReceived( const AVT::VmbAPI::FramePtr pFrame )
     {
@@ -39,7 +39,7 @@ public:
         {
             if ( VmbFrameStatusComplete == eReceiveStatus )
             {
-                // Put code here to react on a successfully received frame               
+                //  successfully received frame               
                 if (VmbErrorSuccess == pFrame->GetImage(pImage))
 			    {
                     VmbUint32_t width=1600;	
@@ -55,11 +55,11 @@ public:
             }
             else
             {
-                // Put code here to react on an unsuccessfully received frame
+                // unsuccessfully received frame
                 ROS_INFO("receiving frame failed.");
             }
         }
-        // When you are finished copying the frame , re - queue it
+        // finished copying the frame , re - queue it
         m_pCamera->QueueFrame( pFrame );
     }
 private:
