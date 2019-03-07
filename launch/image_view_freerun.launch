@@ -4,7 +4,8 @@
         <param name="~image_height" type="int" value="1200"/>
         <param name="~image_width" type="int" value="1600"/>
         <param name="~exposure_in_us" type="int" value="10000"/>
-        <param name="~trigger" type="bool" value="false"/>
+        <param name="~trigger_source" type="str" value="FreeRun"/>
+        <param name="~frame_rate" type="double" value="5"/>
         <param name="~balance_white_auto" type="bool" value="false"/>
         <param name="~exposure_auto" type="bool" value="false"/>
     </node>

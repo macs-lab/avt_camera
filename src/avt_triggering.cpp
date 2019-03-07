@@ -87,7 +87,8 @@ private:
     // this function fetch parameters from ROS server
     void getParams(ros::NodeHandle &n, CameraParam &cp);
     void SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height);
-    void SetExposureTime(const VmbInt64_t & time_in_us); 
+    void SetExposureTime(const VmbInt64_t & time_in_us);
+    void SetAcquisitionFramRate(const double & fps); 
 
     CameraParam cam_param;
     VmbInt64_t nPLS; // Payload size value
@@ -110,6 +111,7 @@ void AVTCamera::triggerCb(const std_msgs::String::ConstPtr& msg)
 void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
 {
     int height,width,exposure;
+    double fps;
     if(n.getParam("cam_IP", cam_param.cam_IP))
     {
         ROS_INFO("Got camera IP %s", cam_param.cam_IP.c_str());
@@ -150,14 +152,24 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
         ROS_ERROR("failed to get param 'exposure_in_us' ");
     }
 
-    if(n.getParam("trigger", cam_param.trigger))
+    if(n.getParam("frame_rate", fps))
     {
-        ROS_INFO("trigger %s", cam_param.trigger ? "enabled" : "disabled");
+        ROS_INFO("Got frame_rate %f", fps);
     }
     else
     {
-        cam_param.trigger = false;
-        ROS_ERROR("failed to get param 'trigger' ");
+        fps = 20;
+        ROS_ERROR("failed to get param 'frame_rate' ");
+    }
+
+    if(n.getParam("trigger_source", cam_param.trigger_source))
+    {
+        ROS_INFO_STREAM("trigger source is " << cam_param.trigger_source);
+    }
+    else
+    {
+        cam_param.trigger_source = "FreeRun";
+        ROS_ERROR("failed to get param 'trigger_souorce' ");
     }
 
     if(n.getParam("exposure_auto", cam_param.exposure_auto))
@@ -183,6 +195,7 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
     cam_param.image_height = height;
     cam_param.image_width = width;
     cam_param.exposure_in_us = exposure;
+    cam_param.frame_rate = fps;
 }
 
 void AVTCamera::StartAcquisition()
@@ -356,6 +369,35 @@ void AVTCamera::SetExposureTime(const VmbInt64_t & time_in_us)
 	}
 }
 
+void AVTCamera::SetAcquisitionFramRate(const double & fps)
+{
+    VmbErrorType err;
+	err = camera->GetFeatureByName("AcquisitionFrameRateAbs", pFeature);
+	if (err == VmbErrorSuccess)
+	{
+		err = pFeature->SetValue(fps); 
+		if (VmbErrorSuccess == err)
+		{
+			bool bIsCommandDone = false;
+			do
+			{
+				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+				{
+					break;
+				}
+			} while (false == bIsCommandDone);
+		}
+		else
+		{
+            ROS_ERROR("failed to set AcquisitionFrameRateAbs feature");
+		}
+	}
+    else
+    {
+        ROS_ERROR("failed to open AcquisitionFrameRateAbs feature");
+    }
+}
+
 void AVTCamera::TriggerImage()
 {
     VmbErrorType err;
@@ -383,6 +425,7 @@ void AVTCamera::SetCameraFeature()
     VmbErrorType err;
     SetExposureTime(cam_param.exposure_in_us);
     SetCameraImageSize(cam_param.image_width, cam_param.image_height);
+    SetAcquisitionFramRate(cam_param.frame_rate);
 
     // Set acquisition mode
     camera->GetFeatureByName("AcquisitionMode", pFeature);
@@ -405,13 +448,21 @@ void AVTCamera::SetCameraFeature()
 
     // Set Trigger source
     camera->GetFeatureByName("TriggerSource", pFeature);
-    if(cam_param.trigger)
+    if(cam_param.trigger_source == "Software")
     {
         err = pFeature->SetValue("Software");
+    }
+    else if(cam_param.trigger_source == "FixedRate")
+    {
+        err = pFeature->SetValue("FixedRate");
     }
     else
     {
         err = pFeature->SetValue("Freerun");
+        if(cam_param.trigger_source != "FreeRun")
+        {
+            ROS_ERROR("Invalid trigger source value. Valid values are from set {FixedRate, Software, FreeRun}");
+        }
     }
     
     if (VmbErrorSuccess == err)

@@ -15,7 +15,9 @@ struct CameraParam
     int image_height;
     int image_width;
     int exposure_in_us;
-    bool trigger;
+    std::string trigger_source;
+    double frame_rate;
+    // fram_rate could be: FixedRate, Software, FreeRun
     bool balance_white_auto;
     bool exposure_auto;
 };
