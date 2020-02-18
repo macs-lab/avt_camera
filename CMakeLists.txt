@@ -17,7 +17,10 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 set( OpenCV_DIR /home/macs/OpenCV/build )
-find_package(OpenCV 3.4.1 REQUIRED)
+# do we really need version 3.4.1 ?
+# ROS Kinetic OpenCV default version is 3.3.1
+
+find_package(OpenCV 3.3.1 REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
