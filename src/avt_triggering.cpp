@@ -16,9 +16,14 @@ hui.xiao@uconn.edu
 #include "avt_camera_streaming/MessagePublisher.h"
 #include "std_msgs/String.h"
 
-/*From Vimba C++ manual: To assure correct continuous image capture, use at least two or three frames. The appropriate number of frames to be queued in your application depends on the frames per second the camera 
+/***
+From Vimba C++ manual: To assure correct continuous image capture, 
+use at least two or three frames. The appropriate number of frames to be 
+queued in your application depends on the frames per second the camera 
 delivers and on the speed with which you are able to re-queue frames (also taking into consideration the 
-operating system load). The image frames are filled in the same order in which they were queued.*/
+operating system load). The image frames are filled in the same order in which they were queued.
+***/
+
 #define NUM_OF_FRAMES 3
 
 //define observer that reacts on new frames
@@ -41,8 +46,8 @@ public:
             {
                 //  successfully received frame               
                 if (VmbErrorSuccess == pFrame->GetImage(pImage))
-			    {
-                    VmbUint32_t width=1600;	
+                {
+                    VmbUint32_t width=1600; 
                     VmbUint32_t height=1200;
                     pFrame->GetHeight(height);
                     pFrame->GetWidth(width);
@@ -96,7 +101,7 @@ private:
     AVT::VmbAPI::VimbaSystem &sys;
     AVT::VmbAPI::CameraPtr camera;
     AVT::VmbAPI::FramePtrVector frames; // Frame array
-    ros::NodeHandle n;   // this will be initialized as n("~") for accessing private parameters
+    ros::NodeHandle n;   // this wilsl be initialized as n("~") for accessing private parameters
     ros::NodeHandle nn;  // initialized without namespace. 
     ros::Subscriber sub; // subscriber to camera trigger signal
     MessagePublisher image_pub;  // image publisher class. Using image_transport api.
@@ -252,146 +257,146 @@ void AVTCamera::StopAcquisition()
 
 void AVTCamera::SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height)
 {
-	// set the offset value to centralize the image.
-	VmbInt64_t offset_x = int((1600 - width) / 2);
-	VmbInt64_t offset_y = int((1200 - height) / 2);
-	VmbErrorType err;
-	err = camera->GetFeatureByName("Height", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->SetValue(height);
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-		else
-		{
+    // set the offset value to centralize the image.
+    VmbInt64_t offset_x = int((1600 - width) / 2);
+    VmbInt64_t offset_y = int((1200 - height) / 2);
+    VmbErrorType err;
+    err = camera->GetFeatureByName("Height", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->SetValue(height);
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+        else
+        {
             ROS_ERROR("failed to set height.");
-		}
-	}
+        }
+    }
 
-	err = camera->GetFeatureByName("Width", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->SetValue(width);
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-		else
-		{
+    err = camera->GetFeatureByName("Width", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->SetValue(width);
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+        else
+        {
             ROS_ERROR("failed to set width");
-		}
-	}
+        }
+    }
 
-	
-	err = camera->GetFeatureByName("OffsetX", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->SetValue(offset_x);
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-		else
-		{
+    
+    err = camera->GetFeatureByName("OffsetX", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->SetValue(offset_x);
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+        else
+        {
             ROS_ERROR("failed to set OffsetX");
-		}
-	}
+        }
+    }
 
-	err = camera->GetFeatureByName("OffsetY", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->SetValue(offset_y);
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-		else
-		{
+    err = camera->GetFeatureByName("OffsetY", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->SetValue(offset_y);
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+        else
+        {
             ROS_ERROR("failed to set OffsetY");
-		}
-	}
-	
+        }
+    }
+    
 }
 
 void AVTCamera::SetExposureTime(const VmbInt64_t & time_in_us)
 {
-	VmbErrorType err;
-	err = camera->GetFeatureByName("ExposureTimeAbs", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->SetValue((double)time_in_us); 
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-		else
-		{
-			std::cout << "failed to set ExposureTimeAbs." << std::endl;
-			getchar();
-		}
-	}
+    VmbErrorType err;
+    err = camera->GetFeatureByName("ExposureTimeAbs", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->SetValue((double)time_in_us); 
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+        else
+        {
+            std::cout << "failed to set ExposureTimeAbs." << std::endl;
+            getchar();
+        }
+    }
 }
 
 void AVTCamera::SetAcquisitionFramRate(const double & fps)
 {
     VmbErrorType err;
-	err = camera->GetFeatureByName("AcquisitionFrameRateAbs", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->SetValue(fps); 
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-		else
-		{
+    err = camera->GetFeatureByName("AcquisitionFrameRateAbs", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->SetValue(fps); 
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+        else
+        {
             ROS_ERROR("failed to set AcquisitionFrameRateAbs feature");
-		}
-	}
+        }
+    }
     else
     {
         ROS_ERROR("failed to open AcquisitionFrameRateAbs feature");
@@ -401,22 +406,22 @@ void AVTCamera::SetAcquisitionFramRate(const double & fps)
 void AVTCamera::TriggerImage()
 {
     VmbErrorType err;
-	err = camera->GetFeatureByName("TriggerSoftware", pFeature);
-	if (err == VmbErrorSuccess)
-	{
-		err = pFeature->RunCommand();
-		if (VmbErrorSuccess == err)
-		{
-			bool bIsCommandDone = false;
-			do
-			{
-				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
-				{
-					break;
-				}
-			} while (false == bIsCommandDone);
-		}
-	}
+    err = camera->GetFeatureByName("TriggerSoftware", pFeature);
+    if (err == VmbErrorSuccess)
+    {
+        err = pFeature->RunCommand();
+        if (VmbErrorSuccess == err)
+        {
+            bool bIsCommandDone = false;
+            do
+            {
+                if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+                {
+                    break;
+                }
+            } while (false == bIsCommandDone);
+        }
+    }
 }
 
 // This must be called after opening the camera.
