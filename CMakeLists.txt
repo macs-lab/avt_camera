@@ -16,8 +16,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-set( OpenCV_DIR /home/macs/OpenCV/build )
-find_package(OpenCV 3.4.1 REQUIRED)
+#set( OpenCV_DIR /home/macs/OpenCV/build )
+find_package(OpenCV REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -164,6 +164,14 @@ target_link_libraries(avt_triggering
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaC.so
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaCPP.so
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaImageTransform.so
+)
+
+add_executable(img_viewer
+  src/img_viewer.cpp
+)
+target_link_libraries(img_viewer
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
 )
 
 #############
