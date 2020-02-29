@@ -174,6 +174,14 @@ target_link_libraries(img_viewer
   ${OpenCV_LIBS}
 )
 
+add_executable(img_publisher
+  src/img_publisher.cpp
+)
+target_link_libraries(img_publisher
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
+
 #############
 ## Install ##
 #############
