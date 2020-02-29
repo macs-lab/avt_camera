@@ -35,16 +35,7 @@ The camera can be triggered by sending a message (type ``std_msgs/String``) to `
 
 [``image_transport``](http://wiki.ros.org/image_transport)
 
-[``OpenCV 3.4.1``](https://opencv.org/opencv-3-4-1.html) (other versions of OpenCV is not tested, they might work as well)
-
 2. Clone this package to your working directory
-
-3. In ``CMakeList.txt``, set OpenCV_DIR to your OpenCV build directory:
-
-```
-set( OpenCV_DIR /your_OpenCV_dir/build )
-find_package(OpenCV 3.4.1 REQUIRED)
-```
 
 4. Build this package
 
