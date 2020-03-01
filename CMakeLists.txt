@@ -16,11 +16,13 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-set( OpenCV_DIR /home/macs/OpenCV/build )
+#set( OpenCV_DIR /home/macs/OpenCV/build )
 # do we really need version 3.4.1 ?
 # ROS Kinetic OpenCV default version is 3.3.1
 
-find_package(OpenCV 3.3.1 REQUIRED)
+#find_package(OpenCV 3.3.1 REQUIRED)
+#set( OpenCV_DIR /home/macs/OpenCV/build )
+find_package(OpenCV REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -157,7 +159,7 @@ include_directories(
 
 add_executable(avt_triggering
   src/avt_triggering.cpp
-  src/MessagePublisher.cpp 
+  src/MessagePublisher.cpp
 )
 add_dependencies(avt_triggering ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -167,6 +169,22 @@ target_link_libraries(avt_triggering
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaC.so
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaCPP.so
   ${CMAKE_CURRENT_SOURCE_DIR}/lib/libVimbaImageTransform.so
+)
+
+add_executable(img_viewer
+  src/img_viewer.cpp
+)
+target_link_libraries(img_viewer
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
+
+add_executable(img_publisher
+  src/img_publisher.cpp
+)
+target_link_libraries(img_publisher
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
 )
 
 #############
