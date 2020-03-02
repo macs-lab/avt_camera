@@ -157,6 +157,19 @@ include_directories(
 
 ## Specify libraries to link a library or executable target against
 
+add_executable(run_virtual_avt
+  src/run_virtual_avt.cpp
+  src/avt_virtual.cpp
+)
+target_link_libraries(run_virtual_avt
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
+
+# add_executable(avt_virtual
+#   src/avt_virtual.cpp
+# )
+
 add_executable(avt_triggering
   src/avt_triggering.cpp
   src/MessagePublisher.cpp
