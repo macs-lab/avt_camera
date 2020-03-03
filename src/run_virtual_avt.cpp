@@ -6,7 +6,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "avt_virtual_camera");
 
-  ROS_INFO("Hello mfker");
+  ROS_INFO("Hello Trump");
 
   std::string sub_topic = "/trigger";
   std::string pub_topic = "/avt_camera_img";
