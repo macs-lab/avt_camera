@@ -89,6 +89,7 @@ private:
     void SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height);
     void SetExposureTime(const VmbInt64_t & time_in_us);
     void SetAcquisitionFramRate(const double & fps); 
+    void SetGain(const VmbInt64_t & gain);
 
     CameraParam cam_param;
     VmbInt64_t nPLS; // Payload size value
@@ -110,7 +111,7 @@ void AVTCamera::triggerCb(const std_msgs::String::ConstPtr& msg)
 
 void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
 {
-    int height,width,exposure;
+    int height,width,exposure,gain;
     double fps;
     if(n.getParam("cam_IP", cam_param.cam_IP))
     {
@@ -192,10 +193,21 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
         ROS_ERROR("failed to get param 'balance_white_auto' ");
     }
 
+    if(n.getParam("gain", gain))
+    {
+        ROS_INFO("gain is %i dB", gain);
+    }
+    else
+    {
+        gain = 0;
+        ROS_ERROR("failed to get param 'gain' ");
+    }
+
     cam_param.image_height = height;
     cam_param.image_width = width;
     cam_param.exposure_in_us = exposure;
     cam_param.frame_rate = fps;
+    cam_param.gain = gain;
 }
 
 void AVTCamera::StartAcquisition()
@@ -398,6 +410,35 @@ void AVTCamera::SetAcquisitionFramRate(const double & fps)
     }
 }
 
+void AVTCamera::SetGain(const VmbInt64_t & gain)
+{
+    VmbErrorType err;
+	err = camera->GetFeatureByName("Gain", pFeature);
+	if (err == VmbErrorSuccess)
+	{
+		err = pFeature->SetValue((double)gain); 
+		if (VmbErrorSuccess == err)
+		{
+			bool bIsCommandDone = false;
+			do
+			{
+				if (VmbErrorSuccess != pFeature->IsCommandDone(bIsCommandDone))
+				{
+					break;
+				}
+			} while (false == bIsCommandDone);
+		}
+		else
+		{
+            ROS_ERROR("failed to set camera gain");
+		}
+	}
+    else
+    {
+        ROS_ERROR("failed to open gain feature");
+    }
+}
+
 void AVTCamera::TriggerImage()
 {
     VmbErrorType err;
@@ -426,6 +467,7 @@ void AVTCamera::SetCameraFeature()
     SetExposureTime(cam_param.exposure_in_us);
     SetCameraImageSize(cam_param.image_width, cam_param.image_height);
     SetAcquisitionFramRate(cam_param.frame_rate);
+    SetGain(cam_param.gain);
 
     // Set acquisition mode
     camera->GetFeatureByName("AcquisitionMode", pFeature);

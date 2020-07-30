@@ -8,6 +8,7 @@
         <param name="~frame_rate" type="double" value="5.0"/>
         <param name="~balance_white_auto" type="bool" value="false"/>
         <param name="~exposure_auto" type="bool" value="false"/>
+        <param name="~gain" type="int" value="0"/>
     </node>
     <node name="img_viewer" pkg="avt_camera" type="img_viewer">
         <remap from="image" to="avt_camera_img"/>
