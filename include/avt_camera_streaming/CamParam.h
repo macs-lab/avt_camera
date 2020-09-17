@@ -14,6 +14,8 @@ struct CameraParam
     std::string cam_IP;
     int image_height;
     int image_width;
+    int offsetX;
+    int offsetY;
     int exposure_in_us;
     int gain;
     std::string trigger_source;

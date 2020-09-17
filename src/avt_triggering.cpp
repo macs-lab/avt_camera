@@ -86,7 +86,7 @@ private:
     void triggerCb(const std_msgs::String::ConstPtr& msg);
     // this function fetch parameters from ROS server
     void getParams(ros::NodeHandle &n, CameraParam &cp);
-    void SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height);
+    void SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height, const VmbInt64_t& offsetX, const VmbInt64_t& offsetY);
     void SetExposureTime(const VmbInt64_t & time_in_us);
     void SetAcquisitionFramRate(const double & fps); 
     void SetGain(const VmbInt64_t & gain);
@@ -112,6 +112,7 @@ void AVTCamera::triggerCb(const std_msgs::String::ConstPtr& msg)
 void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
 {
     int height,width,exposure,gain;
+    int offsetX, offsetY;
     double fps;
     if(n.getParam("cam_IP", cam_param.cam_IP))
     {
@@ -141,6 +142,26 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
     {
         width = 1600;
         ROS_ERROR("failed to get param 'image_width' ");
+    }
+
+    if(n.getParam("offsetX", offsetX))
+    {
+        ROS_INFO("Got offsetX %i", offsetX);
+    }
+    else
+    {
+        offsetX = 0;
+        ROS_ERROR("failed to get param 'offsetX' ");
+    }
+
+    if(n.getParam("offsetY", offsetY))
+    {
+        ROS_INFO("Got offsetY %i", offsetY);
+    }
+    else
+    {
+        offsetY = 0;
+        ROS_ERROR("failed to get param 'offsetY' ");
     }
 
     if(n.getParam("exposure_in_us", exposure))
@@ -208,6 +229,8 @@ void AVTCamera::getParams(ros::NodeHandle &n, CameraParam &cam_param)
     cam_param.exposure_in_us = exposure;
     cam_param.frame_rate = fps;
     cam_param.gain = gain;
+    cam_param.offsetX = offsetX;
+    cam_param.offsetY = offsetY;
 }
 
 void AVTCamera::StartAcquisition()
@@ -262,11 +285,11 @@ void AVTCamera::StopAcquisition()
     sys.Shutdown();
 }
 
-void AVTCamera::SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height)
+void AVTCamera::SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& height, const VmbInt64_t& offsetX, const VmbInt64_t& offsetY)
 {
 	// set the offset value to centralize the image.
-	VmbInt64_t offset_x = int((1600 - width) / 2);
-	VmbInt64_t offset_y = int((1200 - height) / 2);
+	//VmbInt64_t offset_x = int((1600 - width) / 2);
+	//VmbInt64_t offset_y = int((1200 - height) / 2);
 	VmbErrorType err;
 	err = camera->GetFeatureByName("Height", pFeature);
 	if (err == VmbErrorSuccess)
@@ -314,7 +337,7 @@ void AVTCamera::SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& he
 	err = camera->GetFeatureByName("OffsetX", pFeature);
 	if (err == VmbErrorSuccess)
 	{
-		err = pFeature->SetValue(offset_x);
+		err = pFeature->SetValue(offsetX);
 		if (VmbErrorSuccess == err)
 		{
 			bool bIsCommandDone = false;
@@ -335,7 +358,7 @@ void AVTCamera::SetCameraImageSize(const VmbInt64_t& width, const VmbInt64_t& he
 	err = camera->GetFeatureByName("OffsetY", pFeature);
 	if (err == VmbErrorSuccess)
 	{
-		err = pFeature->SetValue(offset_y);
+		err = pFeature->SetValue(offsetY);
 		if (VmbErrorSuccess == err)
 		{
 			bool bIsCommandDone = false;
@@ -465,7 +488,7 @@ void AVTCamera::SetCameraFeature()
 {
     VmbErrorType err;
     SetExposureTime(cam_param.exposure_in_us);
-    SetCameraImageSize(cam_param.image_width, cam_param.image_height);
+    SetCameraImageSize(cam_param.image_width, cam_param.image_height, cam_param.offsetX, cam_param.offsetY);
     SetAcquisitionFramRate(cam_param.frame_rate);
     SetGain(cam_param.gain);
 

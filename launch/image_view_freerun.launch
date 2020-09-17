@@ -3,6 +3,8 @@
         <param name="~cam_IP" type="str" value="169.254.49.41" />
         <param name="~image_height" type="int" value="1200"/>
         <param name="~image_width" type="int" value="1600"/>
+        <param name="~offsetX" type="int" value="0"/>
+        <param name="~offsetY" type="int" value="0"/>
         <param name="~exposure_in_us" type="int" value="10000"/>
         <param name="~trigger_source" type="str" value="FreeRun"/>
         <param name="~frame_rate" type="double" value="5"/>
