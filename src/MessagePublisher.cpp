@@ -9,5 +9,6 @@
 void MessagePublisher::PublishImage(cv::Mat &image)
 {
     msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
+    msg->header.stamp = ros::Time::now();
     img_pub.publish(msg);
 }
